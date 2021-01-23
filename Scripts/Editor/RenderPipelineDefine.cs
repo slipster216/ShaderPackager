@@ -23,7 +23,6 @@ using UnityEditor.PackageManager.Requests;
 
 namespace JBooth.ShaderPackager
 {
-#if __BETTERSHADERS__
     public static class RenderPipelineDefine
     {
  
@@ -115,7 +114,6 @@ namespace JBooth.ShaderPackager
         }
  
     }
-#endif
 }
 
 #endif

@@ -51,9 +51,6 @@ namespace JBooth.ShaderPackager
 
          EditorGUILayout.PropertyField(m_entryProperties);
 
-         Debug.Log("assembly : " + typeof(ShaderPackage).AssemblyQualifiedName);
-         Debug.Log("namespace : " + typeof(ShaderPackage).Namespace);
-
          if ((typeof(ShaderPackage).Namespace == "JBooth.ShaderPackager") ||
             ShaderPackageImporter.k_FileExtension == ".shaderpack")
          {
