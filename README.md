@@ -16,4 +16,4 @@
    Add some entries, and set the SRP Target, Min and Max Unity versions for each, and set the shader. When you are done, press the Pack button, it will copy the source code for each shader into the text block of each entry. Then press Apply, and you will notice that your object now becomes a shader for the current project.
 
 # Current Issues
-   The render pipeline detection is based on installed pipeline, not installed and active pipeline. So if a user switches has multiple SRPs installed, or one installed an not active, they will get the wrong shader. I'll have to fix this at some point soon.
+   The render pipeline detection is based on installed pipeline, not installed and active pipeline. So if a user switches has multiple SRPs installed, or one installed and not active, they will get the wrong shader. I'll have to fix this at some point soon.
