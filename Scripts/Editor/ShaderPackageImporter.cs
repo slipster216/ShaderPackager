@@ -41,7 +41,7 @@ namespace JBooth.ShaderPackager
             return;
          }
 
-         Shader shader = ShaderUtil.CreateShaderAsset(ctx, shaderSrc, false);
+         Shader shader = ShaderUtil.CreateShaderAsset(ctx, shaderSrc, true);
 
          ctx.AddObjectToAsset("MainAsset", shader);
          ctx.SetMainObject(shader);

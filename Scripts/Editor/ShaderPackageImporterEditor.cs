@@ -53,7 +53,7 @@ namespace JBooth.ShaderPackager
       public override void OnInspectorGUI()
       {
          extraDataSerializedObject.Update();
-
+         
          EditorGUILayout.PropertyField(m_entryProperties);
 
          if ((typeof(ShaderPackage).Namespace == "JBooth.ShaderPackager") ||
@@ -61,7 +61,6 @@ namespace JBooth.ShaderPackager
          {
             EditorGUILayout.HelpBox("Warning: You must change the namespace and extension!", MessageType.Error);
          }
-
 
          if (GUILayout.Button("Pack"))
          {
@@ -72,6 +71,10 @@ namespace JBooth.ShaderPackager
                {
                   Debug.LogError("Shader is null, cannot pack");
                   break;
+               }
+               if (e.UnityVersionMax == ShaderPackage.UnityVersion.Min && e.UnityVersionMin == ShaderPackage.UnityVersion.Min)
+               {
+                  e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
                }
                e.shaderSrc = File.ReadAllText(AssetDatabase.GetAssetPath(e.shader));
             }

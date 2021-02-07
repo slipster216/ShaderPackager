@@ -110,6 +110,11 @@ namespace JBooth.ShaderPackager
          {
             if (target != e.srpTarget)
                continue;
+            // default init state..
+            if (e.UnityVersionMax == UnityVersion.Min && e.UnityVersionMin == UnityVersion.Min)
+            {
+               e.UnityVersionMax = UnityVersion.Max;
+            }
             if (curVersion >= e.UnityVersionMin && curVersion <= UnityVersion.Max)
             {
                if (s != null)
