@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-#if UNITY_2020_1_OR_NEWER
+#if UNITY_2020_2_OR_NEWER
 using UnityEditor.AssetImporters;
 #else
 using UnityEditor.Experimental.AssetImporters;
@@ -23,20 +23,43 @@ namespace JBooth.ShaderPackager
 
       public override void OnImportAsset(AssetImportContext ctx)
       {
-
+         
          string fileContent = File.ReadAllText(ctx.assetPath);
          var package = ObjectFactory.CreateInstance<ShaderPackage>();
+
          if (!string.IsNullOrEmpty(fileContent))
          {
             EditorJsonUtility.FromJsonOverwrite(fileContent, package);
          }
-
 
          if (package.entries == null)
          {
             package.entries = new List<ShaderPackage.Entry>();
          }
 
+         package.Pack(false);
+
+#if __BETTERSHADERS__
+         if (package.betterShader == null && !string.IsNullOrEmpty(package.betterShaderPath))
+         {
+            ctx.DependsOnSourceAsset(package.betterShaderPath);
+         }
+         if (package.betterShader != null)
+         {
+            package.betterShaderPath = AssetDatabase.GetAssetPath(package.betterShader);
+            ctx.DependsOnSourceAsset(package.betterShaderPath);
+
+         }
+#endif
+
+         foreach (var e in package.entries)
+         {
+            if (e.shader != null)
+            {
+               ctx.DependsOnSourceAsset(AssetDatabase.GetAssetPath(e.shader));
+            }
+         }
+         
          string shaderSrc = package.GetShaderSrc();
          if (shaderSrc == null)
          {
@@ -44,8 +67,8 @@ namespace JBooth.ShaderPackager
             // maybe make an error shader here?
             return;
          }
-
-         Shader shader = ShaderUtil.CreateShaderAsset(ctx, shaderSrc, true);
+         
+         Shader shader = ShaderUtil.CreateShaderAsset(ctx, shaderSrc, false);
 
          ctx.AddObjectToAsset("MainAsset", shader);
          ctx.SetMainObject(shader);

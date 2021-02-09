@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-#if UNITY_2020_1_OR_NEWER
+#if UNITY_2020_2_OR_NEWER
 using UnityEditor.AssetImporters;
 #else
 using UnityEditor.Experimental.AssetImporters;
@@ -21,8 +21,12 @@ namespace JBooth.ShaderPackager
    [CanEditMultipleObjects]
    public class ShaderPackageImporterEditor : ScriptedImporterEditor
    {
-
+      SerializedProperty m_autoUpdate;
       SerializedProperty m_entryProperties;
+#if __BETTERSHADERS__
+      SerializedProperty m_betterShader;
+      SerializedProperty m_optionOverrides;
+#endif
 
       // override extraDataType to return the type that will be used in the Editor.
       protected override System.Type extraDataType => typeof(ShaderPackage);
@@ -52,12 +56,20 @@ namespace JBooth.ShaderPackager
          base.OnEnable();
          // In OnEnable, retrieve the importerUserSerializedObject property and store it.
          m_entryProperties = extraDataSerializedObject.FindProperty("entries");
+#if __BETTERSHADERS__
+         m_betterShader = extraDataSerializedObject.FindProperty("betterShader");
+         m_optionOverrides = extraDataSerializedObject.FindProperty("optionOverrides");
+#endif
       }
 
       public override void OnInspectorGUI()
       {
          extraDataSerializedObject.Update();
-         
+         ShaderPackage sp = extraDataSerializedObject.targetObject as ShaderPackage;
+#if __BETTERSHADERS__
+         EditorGUILayout.PropertyField(m_betterShader);
+         EditorGUILayout.PropertyField(m_optionOverrides);
+#endif
          EditorGUILayout.PropertyField(m_entryProperties);
 
          if ((typeof(ShaderPackage).Namespace == "JBooth.ShaderPackager") ||
@@ -68,20 +80,7 @@ namespace JBooth.ShaderPackager
 
          if (GUILayout.Button("Pack"))
          {
-            var sp = extraDataSerializedObject.targetObject as ShaderPackage;
-            foreach (var e in sp.entries)
-            {
-               if (e.shader == null)
-               {
-                  Debug.LogError("Shader is null, cannot pack");
-                  break;
-               }
-               if (e.UnityVersionMax == ShaderPackage.UnityVersion.Min && e.UnityVersionMin == ShaderPackage.UnityVersion.Min)
-               {
-                  e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
-               }
-               e.shaderSrc = File.ReadAllText(AssetDatabase.GetAssetPath(e.shader));
-            }
+            sp.Pack(true);
          }
 
          extraDataSerializedObject.ApplyModifiedProperties();

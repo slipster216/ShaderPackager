@@ -12,7 +12,6 @@ namespace JBooth.ShaderPackager
 {
    public class ShaderPackage : ScriptableObject
    {
-
       public enum SRPTarget
       {
          Standard,
@@ -51,6 +50,98 @@ namespace JBooth.ShaderPackager
       }
 
       public List<Entry> entries = new List<Entry>();
+#if __BETTERSHADERS__
+      public Shader betterShader;
+      public string betterShaderPath;
+      public JBooth.BetterShaders.OptionOverrides optionOverrides;
+#endif
+
+      public void Pack(bool warnErrors)
+      {
+#if __BETTERSHADERS__
+         if (betterShader != null)
+         {
+            betterShaderPath = AssetDatabase.GetAssetPath(betterShader);
+         }
+         if (!string.IsNullOrEmpty(betterShaderPath))
+         {
+            var assetPath = betterShaderPath;
+            if (assetPath.EndsWith(".surfshader"))
+            {
+               entries.Clear();
+               ShaderPackage.Entry e = new ShaderPackage.Entry();
+               entries.Add(e);
+               e.shaderSrc = JBooth.BetterShaders.BetterShaderImporterEditor.BuildExportShader(BetterShaders.ShaderBuilder.RenderPipeline.HDRP, optionOverrides, assetPath);
+               e.srpTarget = ShaderPackage.SRPTarget.HDRP;
+               e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2019_4;
+               e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
+
+               e = new ShaderPackage.Entry();
+               entries.Add(e);
+               e.shaderSrc = JBooth.BetterShaders.BetterShaderImporterEditor.BuildExportShader(BetterShaders.ShaderBuilder.RenderPipeline.Standard, optionOverrides, assetPath);
+               e.srpTarget = ShaderPackage.SRPTarget.Standard;
+               e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2019_4;
+               e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
+
+               e = new ShaderPackage.Entry();
+               entries.Add(e);
+               e.shaderSrc = JBooth.BetterShaders.BetterShaderImporterEditor.BuildExportShader(BetterShaders.ShaderBuilder.RenderPipeline.URP, optionOverrides, assetPath);
+               e.srpTarget = ShaderPackage.SRPTarget.URP;
+               e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2019_4;
+               e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
+            }
+            else if (assetPath.EndsWith(".stackshader"))
+            {
+               entries.Clear();
+               ShaderPackage.Entry e = new ShaderPackage.Entry();
+               entries.Add(e);
+               e.shaderSrc = JBooth.BetterShaders.StackedShaderImporterEditor.BuildExportShader(BetterShaders.ShaderBuilder.RenderPipeline.HDRP, optionOverrides, assetPath);
+               e.srpTarget = ShaderPackage.SRPTarget.HDRP;
+               e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2019_4;
+               e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
+
+               e = new ShaderPackage.Entry();
+               entries.Add(e);
+               e.shaderSrc = JBooth.BetterShaders.StackedShaderImporterEditor.BuildExportShader(BetterShaders.ShaderBuilder.RenderPipeline.Standard, optionOverrides, assetPath);
+               e.srpTarget = ShaderPackage.SRPTarget.Standard;
+               e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2019_4;
+               e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
+
+               e = new ShaderPackage.Entry();
+               entries.Add(e);
+               e.shaderSrc = JBooth.BetterShaders.StackedShaderImporterEditor.BuildExportShader(BetterShaders.ShaderBuilder.RenderPipeline.URP, optionOverrides, assetPath);
+               e.srpTarget = ShaderPackage.SRPTarget.URP;
+               e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2019_4;
+               e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
+            }
+         }
+#endif
+
+         foreach (var e in entries)
+         {
+            if (e.shader
+#if __BETTERSHADERS__
+               && betterShader == null
+#endif
+               )
+            {
+               if (warnErrors)
+               {
+                  Debug.LogError("Shader is null, cannot pack");
+               }
+               break;
+            }
+            if (e.UnityVersionMax == ShaderPackage.UnityVersion.Min && e.UnityVersionMin == ShaderPackage.UnityVersion.Min)
+            {
+               e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
+            }
+            if (e.shader != null)
+            {
+               var path = AssetDatabase.GetAssetPath(e.shader);
+               e.shaderSrc = System.IO.File.ReadAllText(path);
+            }
+         }
+      }
 
       public string GetShaderSrc()
       {
