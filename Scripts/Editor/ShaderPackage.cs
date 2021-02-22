@@ -235,7 +235,7 @@ namespace JBooth.ShaderPackager
             {
                e.UnityVersionMax = UnityVersion.Max;
             }
-            if (curVersion >= e.UnityVersionMin && curVersion <= UnityVersion.Max)
+            if (curVersion >= e.UnityVersionMin && curVersion <= e.UnityVersionMax)
             {
                if (s != null)
                {
