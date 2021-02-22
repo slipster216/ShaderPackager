@@ -74,14 +74,14 @@ namespace JBooth.ShaderPackager
                e.shaderSrc = JBooth.BetterShaders.BetterShaderImporterEditor.BuildExportShader(JBooth.BetterShaders.ShaderBuilder.RenderPipeline.HDRP2019, optionOverrides, assetPath);
                e.srpTarget = ShaderPackage.SRPTarget.HDRP;
                e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2019_4;
-               e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
+               e.UnityVersionMax = ShaderPackage.UnityVersion.Unity2020_1;
 
                e = new ShaderPackage.Entry();
                entries.Add(e);
                e.shaderSrc = JBooth.BetterShaders.BetterShaderImporterEditor.BuildExportShader(JBooth.BetterShaders.ShaderBuilder.RenderPipeline.Standard, optionOverrides, assetPath);
                e.srpTarget = ShaderPackage.SRPTarget.Standard;
                e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2019_4;
-               e.UnityVersionMax = ShaderPackage.UnityVersion.Unity2020_1;
+               e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
 
                e = new ShaderPackage.Entry();
                entries.Add(e);
