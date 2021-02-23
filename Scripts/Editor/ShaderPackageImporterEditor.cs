@@ -104,7 +104,9 @@ namespace JBooth.ShaderPackager
                   ShaderPackage packed = ShaderPackage.CreateInstance<ShaderPackage>();
                   UnityEditor.EditorJsonUtility.FromJsonOverwrite(File.ReadAllText(path), packed);
                   packed.Pack(true);
+                  File.WriteAllText(path, EditorJsonUtility.ToJson(packed));
                   EditorUtility.SetDirty(packed);
+                  AssetDatabase.SaveAssets();
                   AssetDatabase.ImportAsset(path);
                   
                }
