@@ -104,7 +104,7 @@ namespace JBooth.ShaderPackager
                e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2020_2;
                e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
             }
-            else if (assetPath.EndsWith(".stackshader"))
+            else if (assetPath.EndsWith(".stackedshader"))
             {
                entries.Clear();
                ShaderPackage.Entry e = new ShaderPackage.Entry();

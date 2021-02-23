@@ -82,6 +82,39 @@ namespace JBooth.ShaderPackager
          {
             sp.Pack(true);
          }
+         if (GUILayout.Button("Pack all in Project"))
+         {
+            var guids = AssetDatabase.FindAssets("t:Shader");
+            List<string> shaders = new List<string>();
+            for (int i = 0; i < guids.Length; ++i)
+            {
+               var path = AssetDatabase.GUIDToAssetPath(guids[i]);
+               if (path.EndsWith(ShaderPackageImporter.k_FileExtension))
+               {
+                  shaders.Add(path);
+               }
+            }
+
+            for (int i = 0; i < shaders.Count; ++i)
+            {
+               var path = shaders[i];
+               EditorUtility.DisplayProgressBar("Packing Shaders", Path.GetFileName(path), (float)i/shaders.Count);
+               try
+               {
+                  ShaderPackage packed = ShaderPackage.CreateInstance<ShaderPackage>();
+                  UnityEditor.EditorJsonUtility.FromJsonOverwrite(File.ReadAllText(path), packed);
+                  packed.Pack(true);
+                  EditorUtility.SetDirty(packed);
+                  AssetDatabase.ImportAsset(path);
+                  
+               }
+               catch
+               {
+                  EditorUtility.ClearProgressBar();
+               }
+            }
+            EditorUtility.ClearProgressBar();
+         }
 
          extraDataSerializedObject.ApplyModifiedProperties();
 
@@ -90,7 +123,7 @@ namespace JBooth.ShaderPackager
 
 
       [MenuItem("Assets/Create/Shader Package", priority = 300)]
-      static void CreateMenuItemMinimal()
+      static void CreateMenuItemShaderPackage()
       {
          string directoryPath = "Assets";
          foreach (Object obj in Selection.GetFiltered(typeof(Object), SelectionMode.Assets))
