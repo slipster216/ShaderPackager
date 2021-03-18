@@ -63,6 +63,14 @@ namespace JBooth.ShaderPackager
          {
             betterShaderPath = AssetDatabase.GetAssetPath(betterShader);
          }
+         if (betterShader == null)
+         {
+            if (!System.IO.File.Exists(betterShaderPath))
+            {
+               Debug.LogWarning("Shader Packager: Source shader GUID and path have changed, you will need to manually repack the shaders from source");
+               return;
+            }
+         }
          if (!string.IsNullOrEmpty(betterShaderPath))
          {
             var assetPath = betterShaderPath;

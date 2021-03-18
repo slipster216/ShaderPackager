@@ -37,19 +37,21 @@ namespace JBooth.ShaderPackager
             package.entries = new List<ShaderPackage.Entry>();
          }
 
-         package.Pack(false);
-
 #if __BETTERSHADERS__
-         if (package.betterShader == null && !string.IsNullOrEmpty(package.betterShaderPath))
-         {
-            ctx.DependsOnSourceAsset(package.betterShaderPath);
-         }
          if (package.betterShader != null)
          {
             package.betterShaderPath = AssetDatabase.GetAssetPath(package.betterShader);
-            ctx.DependsOnSourceAsset(package.betterShaderPath);
-
          }
+#endif
+
+         package.Pack(false);
+
+#if __BETTERSHADERS__
+         if (package.betterShader != null)
+         {
+               ctx.DependsOnSourceAsset(package.betterShaderPath);
+         }
+         
 #endif
 
          foreach (var e in package.entries)
