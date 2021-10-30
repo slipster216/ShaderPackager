@@ -107,7 +107,16 @@ namespace JBooth.ShaderPackager
                   JBooth.BetterShaders.ShaderBuilder.RenderPipeline.HDRP2020, optionOverrides, assetPath);
                e.srpTarget = ShaderPackage.SRPTarget.HDRP;
                e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2020_2;
+               e.UnityVersionMax = ShaderPackage.UnityVersion.Unity2022_1;
+
+               e = new ShaderPackage.Entry();
+               entries.Add(e);
+               e.shaderSrc = JBooth.BetterShaders.BetterShaderImporterEditor.BuildExportShader(
+                  JBooth.BetterShaders.ShaderBuilder.RenderPipeline.HDRP2021, optionOverrides, assetPath);
+               e.srpTarget = ShaderPackage.SRPTarget.HDRP;
+               e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2021_2;
                e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
+
 
                e = new ShaderPackage.Entry();
                entries.Add(e);
@@ -151,12 +160,28 @@ namespace JBooth.ShaderPackager
                   JBooth.BetterShaders.ShaderBuilder.RenderPipeline.URP2020, optionOverrides, assetPath);
                e.srpTarget = ShaderPackage.SRPTarget.URP;
                e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2020_2;
-               e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
+               e.UnityVersionMax = ShaderPackage.UnityVersion.Unity2020_3;
 
                e = new ShaderPackage.Entry();
                entries.Add(e);
                e.shaderSrc = JBooth.BetterShaders.StackedShaderImporterEditor.BuildExportShader(
                   JBooth.BetterShaders.ShaderBuilder.RenderPipeline.HDRP2020, optionOverrides, assetPath);
+               e.srpTarget = ShaderPackage.SRPTarget.HDRP;
+               e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2020_2;
+               e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
+
+               e = new ShaderPackage.Entry();
+               entries.Add(e);
+               e.shaderSrc = JBooth.BetterShaders.StackedShaderImporterEditor.BuildExportShader(
+                  JBooth.BetterShaders.ShaderBuilder.RenderPipeline.URP2021, optionOverrides, assetPath);
+               e.srpTarget = ShaderPackage.SRPTarget.URP;
+               e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2020_1;
+               e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
+
+               e = new ShaderPackage.Entry();
+               entries.Add(e);
+               e.shaderSrc = JBooth.BetterShaders.StackedShaderImporterEditor.BuildExportShader(
+                  JBooth.BetterShaders.ShaderBuilder.RenderPipeline.HDRP2021, optionOverrides, assetPath);
                e.srpTarget = ShaderPackage.SRPTarget.HDRP;
                e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2020_2;
                e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
