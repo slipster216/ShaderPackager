@@ -124,6 +124,14 @@ namespace JBooth.ShaderPackager
                   JBooth.BetterShaders.ShaderBuilder.RenderPipeline.URP2020, optionOverrides, assetPath);
                e.srpTarget = ShaderPackage.SRPTarget.URP;
                e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2020_2;
+               e.UnityVersionMax = ShaderPackage.UnityVersion.Unity2021_1;
+               
+               e = new ShaderPackage.Entry();
+               entries.Add(e);
+               e.shaderSrc = JBooth.BetterShaders.BetterShaderImporterEditor.BuildExportShader(
+                  JBooth.BetterShaders.ShaderBuilder.RenderPipeline.URP2021, optionOverrides, assetPath);
+               e.srpTarget = ShaderPackage.SRPTarget.URP;
+               e.UnityVersionMin = ShaderPackage.UnityVersion.Unity2021_2;
                e.UnityVersionMax = ShaderPackage.UnityVersion.Max;
             }
             else if (assetPath.EndsWith(".stackedshader"))
